@@ -10,5 +10,4 @@ const deb=new (require('rest-mssql-nodejs'))({
     }
 })
 
-
 module.exports =deb;

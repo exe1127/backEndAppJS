@@ -8,8 +8,7 @@ const cors = require('cors');
 app.use(cors());
 app.options('*', cors());
 app.use(express.urlencoded());
-app.use(express.json());      // if needed
-
+app.use(express.json());      
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
