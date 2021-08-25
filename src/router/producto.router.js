@@ -5,6 +5,7 @@ import {
   insertStock,
   deleteStock,
   getArt,
+  getStock,
 } from "./Acciones";
 
 const express = require("express");
@@ -18,11 +19,7 @@ const cors = require("cors");
 router.get("/getStock/:art", cors(), async (req, res) => {
   try {
     articulo = req.params.art;
-    sql = `SELECT canSto FROM stock WHERE codArticu='${articulo}'`;
-    result = await deb.executeQuery(sql, function (error, results, fields) {
-      if (error) throw console.log(error);
-    });
-    result = result.data[0];
+    result = await getStock(articulo);
     if (result.length == 0) {
       console.log("no se encontro resultado por lo que el stock es 0");
       res.json({ cantS: 0 });

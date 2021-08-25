@@ -20,12 +20,18 @@ export const getArt = async (articulo) => {
   sql = `SELECT * FROM articulos WHERE codArticu ='${articulo}'`;let res;
   result = await deb.executeQuery(sql, function (error) {if (error) throw console.log(error)});
   result = (result.data)[0];
-  if (result.length == 0) {
+  if (result.length == 0){
     console.log("no se encontro resultado");res = {};
   } else {
     res = result[0];
   }
   return res;
+};
+
+export const getStock = async (articulo) => {
+  sql = `SELECT canSto FROM stock WHERE codArticu='${articulo}'`;
+  result = await deb.executeQuery(sql, function (error) {if (error) throw console.log(error)});
+  return result = result.data[0];;
 };
 
 export const insertStock = async (art, cantR) => {
