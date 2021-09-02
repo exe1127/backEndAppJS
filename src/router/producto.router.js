@@ -34,7 +34,7 @@ router.get("/getStock/:art", cors(), async (req, res) => {
 router.get("/getArt/:art", cors(), async (req, res) => {
   try {
     articulo = req.params.art;
-    const result = await getArt(articulo);
+    result = await getArt(articulo);
     res.json(result);
   } catch (error) {
     console.log(error);
@@ -84,6 +84,20 @@ router.get("/getArt", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+router.get("/getListArt", async (req, res) => {
+  try {
+    sql = `SELECT * FROM articulosTomaStock WHERE idTom=
+    (SELECT idTomSto FROM tomasStockOnline WHERE estTomOnl='NO TRATADO')`;
+    result = await deb.executeQuery(sql, function (error) {
+      if (error) throw console.log(error);
+    });
+    result = result.data[0];
+    res.json(result);
+  } catch (error) {
+    res.json(result);
   }
 });
 
