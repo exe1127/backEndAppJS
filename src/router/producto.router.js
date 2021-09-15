@@ -111,7 +111,31 @@ router.get("/getUsuario/:id",cors(), async (req, res) => {
     result=result.data[0];
     res.json(result);
   } catch (error) {
-    res.json(result)
+    res.json(result);
+  }
+})
+
+router.post("/addStockOnline",cors(), async (req, res) => {
+  try {
+    sql = `UPDATE tomasStockOnline SET estTomOnl='TRATADO' WHERE estTomOnl='NO TRATADO'`;
+    result = await deb.executeQuery(sql, function (error) {
+      if (error) throw console.log(error);
+    });
+  }catch (error) {
+    res.json(result);
+  }
+})
+
+router.post("/actualizarArtTomaStock/:id/:cant",cors(), async (req, res) =>{
+  const art = req.params.id;
+  const cant = req.params.cant;
+  try {
+    sql = `UPDATE articulosTomaStock SET cantReal=${cant} WHERE codArticu='${art}'`;
+    result = await deb.executeQuery(sql, function (error) {
+      if (error) throw console.log(error);
+    });
+  } catch (error){
+    res.json(result);
   }
 })
 export default router;
