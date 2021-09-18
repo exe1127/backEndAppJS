@@ -115,7 +115,7 @@ router.get("/getUsuario/:id",cors(), async (req, res) => {
   }
 })
 
-router.post("/addStockOnline",cors(), async (req, res) => {
+router.post("/finalizarToma",async (req, res) => {
   try {
     sql = `UPDATE tomasStockOnline SET estTomOnl='TRATADO' WHERE estTomOnl='NO TRATADO'`;
     result = await deb.executeQuery(sql, function (error) {
@@ -137,5 +137,6 @@ router.post("/actualizarArtTomaStock/:id/:cant",cors(), async (req, res) =>{
   } catch (error){
     res.json(result);
   }
+
 })
 export default router;
