@@ -21,7 +21,6 @@ router.get("/getStock/:art", cors(), async (req, res) => {
     articulo = req.params.art;
     result = await getStock(articulo);
     if (result.length == 0) {
-      console.log("no se encontro resultado por lo que el stock es 0");
       res.json({ cantS: 0 });
     } else {
       res.json(result[0]);
@@ -45,8 +44,9 @@ router.post("/addToma", async (req, res) => {
   const cantS = parseFloat(req.body.cantS);
   const cantR = parseFloat(req.body.cantR);
   const art = req.body.art;
+  const nombre= req.body.nombre;
   try {
-    const idToma = await addToma();
+    const idToma = await addToma(nombre);
     let idSto;
     if (cantS == 0) {
       idSto = await insertStock(art, cantR);

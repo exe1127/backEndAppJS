@@ -5,10 +5,10 @@ router.put("/actualizar");
 let sql;
 let result;
 
-export const addToma = async () => {
+export const addToma = async (nombre) => {
   const f = new Date();
   const fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
-  const obs = "Toma de stock por aplicacion " + fecha;
+  const obs = `Toma de stock por aplicacion por ${nombre} en el dia ${fecha}`;
   sql = `INSERT INTO tomasStock (fecTom,obsTom,idDep,desDep) VALUES ('${fecha}','${obs}','1','CC') SELECT SCOPE_IDENTITY()`;
   result = await deb.executeQuery(sql, function (error) {
     if (error) throw console.log(error);
