@@ -30,11 +30,13 @@ router.get("/getStock/:art", cors(), async (req, res) => {
   }
 });
 
-router.get("/getArt/:art", cors(), async (req, res) => {
+router.get("/getArt/:art", async (req, res) => {
   try {
     articulo = req.params.art;
-    result = await getArt(articulo);
-    res.json(result);
+    if (articulo != '') {
+      result = await getArt(articulo);
+      res.json(result);
+    } else {res.json('');}
   } catch (error) {
     console.log(error);
   }
@@ -44,7 +46,7 @@ router.post("/addToma", async (req, res) => {
   const cantS = parseFloat(req.body.cantS);
   const cantR = parseFloat(req.body.cantR);
   const art = req.body.art;
-  const nombre= req.body.nombre;
+  const nombre = req.body.nombre;
   try {
     const idToma = await addToma(nombre);
     let idSto;
@@ -101,32 +103,32 @@ router.get("/getListArt", async (req, res) => {
   }
 });
 
-router.get("/getUsuario/:id",cors(), async (req, res) => {
-  const codigo = req.params.id
+router.get("/getUsuario/:id", cors(), async (req, res) => {
+  const codigo = req.params.id;
   try {
-    sql=`SELECT * FROM codigoDeIngreso WHERE codigo=${codigo}`
-    result= await deb.executeQuery(sql, function (err){
+    sql = `SELECT * FROM codigoDeIngreso WHERE codigo=${codigo}`;
+    result = await deb.executeQuery(sql, function (err) {
       if (err) throw console.log(err);
     });
-    result=result.data[0];
+    result = result.data[0];
     res.json(result);
   } catch (error) {
     res.json(result);
   }
-})
+});
 
-router.post("/finalizarToma",async (req, res) => {
+router.post("/finalizarToma", async (req, res) => {
   try {
     sql = `UPDATE tomasStockOnline SET estTomOnl='TRATADO' WHERE estTomOnl='NO TRATADO'`;
     result = await deb.executeQuery(sql, function (error) {
       if (error) throw console.log(error);
     });
-  }catch (error) {
+  } catch (error) {
     res.json(result);
   }
-})
+});
 
-router.post("/actualizarArtTomaStock/:id/:cant",cors(), async (req, res) =>{
+router.post("/actualizarArtTomaStock/:id/:cant", cors(), async (req, res) => {
   const art = req.params.id;
   const cant = req.params.cant;
   try {
@@ -134,9 +136,8 @@ router.post("/actualizarArtTomaStock/:id/:cant",cors(), async (req, res) =>{
     result = await deb.executeQuery(sql, function (error) {
       if (error) throw console.log(error);
     });
-  } catch (error){
+  } catch (error) {
     res.json(result);
   }
-
-})
+});
 export default router;
