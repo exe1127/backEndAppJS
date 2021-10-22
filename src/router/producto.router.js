@@ -1,4 +1,3 @@
-import app from "../app";
 import {
   addToma,
   updateStock,
@@ -19,11 +18,15 @@ const cors = require("cors");
 router.get("/getStock/:art", cors(), async (req, res) => {
   try {
     articulo = req.params.art;
-    result = await getStock(articulo);
-    if (result.length == 0) {
-      res.json({ cantS: 0 });
+    if (articulo != " ") {
+      result = await getStock(articulo);
+      if (result.length == 0) {
+        res.json({ cantS: 0 });
+      } else {
+        res.json(result[0]);
+      }
     } else {
-      res.json(result[0]);
+      res.json({ cantS: 0 });
     }
   } catch (error) {
     console.log(error);
@@ -33,10 +36,12 @@ router.get("/getStock/:art", cors(), async (req, res) => {
 router.get("/getArt/:art", async (req, res) => {
   try {
     articulo = req.params.art;
-    if (articulo != '') {
+    if (articulo != "") {
       result = await getArt(articulo);
       res.json(result);
-    } else {res.json('');}
+    } else {
+      res.json("");
+    }
   } catch (error) {
     console.log(error);
   }
@@ -47,24 +52,29 @@ router.post("/addToma", async (req, res) => {
   const cantR = parseFloat(req.body.cantR);
   const art = req.body.art;
   const nombre = req.body.nombre;
+
   try {
-    const idToma = await addToma(nombre);
-    let idSto;
-    if (cantS == 0) {
-      idSto = await insertStock(art, cantR);
+    if (nombre == " " || art == " ") {
+      res.json("no se puede realizar");
     } else {
-      if (cantR != 0) {
-        idSto = await updateStock(art, cantR);
+      const idToma = await addToma(nombre);
+      let idSto;
+      if (cantS == 0) {
+        idSto = await insertStock(art, cantR);
       } else {
-        idSto = await deleteStock(art);
+        if (cantR != 0) {
+          idSto = await updateStock(art, cantR);
+        } else {
+          idSto = await deleteStock(art);
+        }
       }
-    }
-    const get = await getArt(art);
-    sql = `INSERT INTO articulosTomaStock (codArticu,descripcio,descAdic,cantSist,cantReal,bobina,posicion,idSto,idTom,idDep,desDep) 
+      const get = await getArt(art);
+      sql = `INSERT INTO articulosTomaStock (codArticu,descripcio,descAdic,cantSist,cantReal,bobina,posicion,idSto,idTom,idDep,desDep) 
     VALUES ('${art}','${get.descripcio}','${get.descAdic}',${cantS},${cantR},' ','CC-CC-CC-CC',${idSto},${idToma},'${get.idDep}','${get.desDep}')`;
-    result = await deb.executeQuery(sql, function (error) {
-      if (error) throw console.log(error);
-    });
+      result = await deb.executeQuery(sql, function (error) {
+        if (error) throw console.log(error);
+      });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -131,13 +141,17 @@ router.post("/finalizarToma", async (req, res) => {
 router.post("/actualizarArtTomaStock/:id/:cant", cors(), async (req, res) => {
   const art = req.params.id;
   const cant = req.params.cant;
-  try {
-    sql = `UPDATE articulosTomaStock SET cantReal=${cant} WHERE codArticu='${art}'`;
-    result = await deb.executeQuery(sql, function (error) {
-      if (error) throw console.log(error);
-    });
-  } catch (error) {
-    res.json(result);
+  if (art != " ") {
+    try {
+      sql = `UPDATE articulosTomaStock SET cantReal=${cant} WHERE codArticu='${art}'`;
+      result = await deb.executeQuery(sql, function (error) {
+        if (error) throw console.log(error);
+      });
+    } catch (error) {
+      res.json(result);
+    }
+  } else {
+    res.json("no se puede realizar");
   }
 });
 export default router;
