@@ -115,12 +115,17 @@ router.get("/getListArt", async (req, res) => {
 
 router.get("/getUsuario/:id", cors(), async (req, res) => {
   const codigo = req.params.id;
+  
   try {
     sql = `SELECT * FROM codigoDeIngreso WHERE codigo=${codigo}`;
     result = await deb.executeQuery(sql, function (err) {
       if (err) throw console.log(err);
     });
-    result = result.data[0];
+    if ((result.data[0]).length>0){
+      result = (result.data[0]);
+    } else {
+      result ={}
+    }
     res.json(result);
   } catch (error) {
     res.json(result);
