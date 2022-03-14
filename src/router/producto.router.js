@@ -32,12 +32,8 @@ router.get("/getStock/:art", cors(), async (req, res) => {
 router.get("/getArt/:art", async (req, res) => {
   try {
     articulo = req.params.art;
-    if (articulo != "") {
-      result = await getArt(articulo);
-      res.json(result);
-    } else {
-      res.json("");
-    }
+    (articulo != "")?(result = await getArt(articulo),res.json(result)):
+    res.json("");
   } catch (error) {
     console.log(error);
   }
@@ -84,12 +80,8 @@ router.get("/getArt", async (req, res) => {
     });
     result = result.data;
     result = result[0];
-    if (result.length == 0) {
-      console.log("no se encontro resultado");
-      res.json(result[0]);
-    } else {
-      res.json(result);
-    }
+    (result.length == 0)?(console.log("no se encontro resultado"),res.json(result[0])): 
+    res.json(result);
   } catch (error) {
     console.log(error);
   }
@@ -102,8 +94,7 @@ router.get("/getListArt", async (req, res) => {
     result = await deb.executeQuery(sql, function (error) {
       if (error) throw console.log(error);
     });
-    result = result.data[0];
-    res.json(result);
+    result = result.data[0];res.json(result);
   } catch (error) {
     res.json(result);
   }

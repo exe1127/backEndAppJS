@@ -25,12 +25,8 @@ export const getArt = async (articulo) => {
     if (error) throw console.log(error);
   });
   result = result.data[0];
-  if (result.length == 0) {
-    console.log("no se encontro resultado");
-    res = {};
-  } else {
-    res = result[0];
-  }
+  (result.length == 0)?(console.log("no se encontro resultado"),res = {}):res = result[0];
+  
   return res;
 };
 
