@@ -20,11 +20,7 @@ router.get("/getStock/:art", cors(), async (req, res) => {
     articulo = req.params.art;
     if (articulo != " ") {
       result = await getStock(articulo);
-      if (result.length == 0) {
-        res.json({ cantS: 0 });
-      } else {
-        res.json(result[0]);
-      }
+      (result.length == 0) ?  res.json({ cantS: 0 }): res.json(result[0]);
     } else {
       res.json({ cantS: 0 });
     }
@@ -121,11 +117,7 @@ router.get("/getUsuario/:id", cors(), async (req, res) => {
     result = await deb.executeQuery(sql, function (err) {
       if (err) throw console.log(err);
     });
-    if ((result.data[0]).length>0){
-      result = (result.data[0]);
-    } else {
-      result ={}
-    }
+    ((result.data[0]).length>0)?result = (result.data[0]):result ={}
     res.json(result);
   } catch (error) {
     res.json(result);
