@@ -1,7 +1,7 @@
 import express from "express";
 import config from "./config";
 import productoRouter from "./router/producto.router";
-import bodyParser from "body-parser";
+
 
 const app = express();
 const cors = require('cors');
